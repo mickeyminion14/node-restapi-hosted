@@ -52,7 +52,8 @@ const userSchema = new mongoose.Schema({
     //     type: Buffer
     // }
 }, {
-    timestamps: true
+    timestamps: true,
+    collection: "lol"
 })
 
 // userSchema.virtual('tasks', {

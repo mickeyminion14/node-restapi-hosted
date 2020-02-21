@@ -3,7 +3,7 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const mongoUtil = require("./util/mongo/mongoUtil");
 const User = require('./models/userModel');
-console.log('user>>>>>>>', User);
+// console.log('user>>>>>>>', User);
 
 router.use(bodyParser.json());
 
