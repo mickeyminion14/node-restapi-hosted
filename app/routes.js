@@ -1,36 +1,38 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
-const bodyParser = require('body-parser');
-
-router.use(bodyParser.urlencoded({
-    'extended': 'true'
-}));
-
-router.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+const bodyParser = require("body-parser");
+const mongoUtil = require("./util/mongo/mongoUtil");
+const User = require('./models/userModel');
+console.log('user>>>>>>>', User);
 
 router.use(bodyParser.json());
 
+async function getData(db) {
+    return await db
+        .collection("lol")
+        .find()
+        .toArray();
+}
 
+router.get("/addMongo", (req, res) => {
+    var db = mongoUtil.getDb();
 
+    let result = getData(db);
 
-
-router.post("/add", (req, res) => {
-
-    res.send("data posted successfully");
-
+    result.then((data, err) => {
+        res.json({
+            data: data
+        });
+    });
 });
 
-router.get("/getData", (req, res) => {
-    res.send("this is data from server");
-})
+router.post("/mongoose", async (req, res) => {
+    console.log(req.body);
+
+    const user = new User(req.body);
+    user.save().then(data => res.send("done")).catch(err => res.send("error"))
 
 
-
+});
 
 module.exports = router;
